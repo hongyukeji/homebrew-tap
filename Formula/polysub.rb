@@ -1,9 +1,9 @@
 class Polysub < Formula
   desc "Turn any video into subtitles in any language with local or cloud models"
   homepage "https://github.com/hongyukeji/polysub"
-  url "https://github.com/hongyukeji/polysub/releases/download/v0.3.0/polysub-0.3.0-macos-arm64.zip"
-  version "0.3.0"
-  sha256 "9d36aa99ed1ad0d1f4a6b6503d0853c3b8c78e36c460f36d4474fb71137a6550"
+  url "https://github.com/hongyukeji/polysub/releases/download/v0.3.1/polysub-0.3.1-macos-arm64.zip"
+  version "0.3.1"
+  sha256 "50676e87dae36cbc8673da74122aeadca49b280def4ac46573b3799060071cb5"
   license "MIT"
 
   livecheck do
@@ -35,7 +35,7 @@ class Polysub < Formula
   def caveats
     <<~EOS
       Copy the app to /Applications (run it again after `brew upgrade polysub`):
-        polysub install-app
+        polysub install
 
       Or open it in place:
         open #{opt_prefix}/PolySub.app
