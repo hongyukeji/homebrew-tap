@@ -4,6 +4,7 @@ Homebrew tap for tools by [@hongyukeji](https://github.com/hongyukeji).
 
 ```bash
 brew tap hongyukeji/tap
+brew trust hongyukeji/tap   # once (Homebrew 7+ requires trusting third-party taps)
 brew install polysub
 ```
 
