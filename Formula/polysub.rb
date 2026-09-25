@@ -3,7 +3,7 @@ class Polysub < Formula
   homepage "https://github.com/hongyukeji/polysub"
   url "https://github.com/hongyukeji/polysub/releases/download/v0.3.0/polysub-0.3.0-macos-arm64.zip"
   version "0.3.0"
-  sha256 "0000000000000000000000000000000000000000000000000000000000000000"
+  sha256 "9d36aa99ed1ad0d1f4a6b6503d0853c3b8c78e36c460f36d4474fb71137a6550"
   license "MIT"
 
   livecheck do
