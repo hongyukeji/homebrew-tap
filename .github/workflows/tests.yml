@@ -1,0 +1,23 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+    paths: ["Formula/**"]
+  pull_request:
+    paths: ["Formula/**"]
+
+jobs:
+  formulae:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew tap hongyukeji/tap "$GITHUB_WORKSPACE"
+      - name: Style, install and test every formula
+        run: |
+          for f in Formula/*.rb; do
+            n=$(basename "$f" .rb)
+            brew style "hongyukeji/tap/$n"
+            brew install "hongyukeji/tap/$n"
+            brew test "hongyukeji/tap/$n"
+          done

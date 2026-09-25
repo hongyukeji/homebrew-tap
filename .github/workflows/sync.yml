@@ -1,0 +1,54 @@
+# Every 30 minutes (or on demand): bump each formula in tools.json to its tool's
+# latest GitHub release, test it on macOS, and commit. No secrets needed.
+name: Sync releases
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+    inputs:
+      formula:
+        description: "Only this formula (leave empty for all)"
+        required: false
+
+permissions:
+  contents: write
+
+concurrency: sync
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.sync.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: sync
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: echo "changed=$(python3 scripts/sync_formulae.py ${{ inputs.formula }} | xargs)" >> "$GITHUB_OUTPUT"
+
+  update:
+    needs: check
+    if: needs.check.outputs.changed != ''
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update formulae
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 scripts/sync_formulae.py ${{ needs.check.outputs.changed }}
+      - name: Commit locally
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Update ${{ needs.check.outputs.changed }}"
+      - name: Install and test
+        run: |
+          brew tap hongyukeji/tap "$GITHUB_WORKSPACE"
+          for f in ${{ needs.check.outputs.changed }}; do
+            brew style "hongyukeji/tap/$f"
+            brew install "hongyukeji/tap/$f"
+            brew test "hongyukeji/tap/$f"
+          done
+      - run: git push
