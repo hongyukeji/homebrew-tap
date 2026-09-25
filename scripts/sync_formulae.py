@@ -1,6 +1,6 @@
 """Update each formula listed in tools.json to its tool's latest GitHub release.
 
-Reads the release's checksums.txt for the SHA256 and rewrites the formula's
+Reads the release's SHA256SUMS (or checksums.txt) for the SHA256 and rewrites the formula's
 url/version/sha256 lines. Prints the names of the formulae it changed (one per line).
 Uses GITHUB_TOKEN when present (higher API rate limit); needs no other secrets.
 """
@@ -27,10 +27,11 @@ def sync(tool):
     version = rel["tag_name"].lstrip("v")
     asset = tool["asset"].format(version=version)
     assets = {a["name"]: a["browser_download_url"] for a in rel["assets"]}
-    if asset not in assets or "checksums.txt" not in assets:
-        print(f"{tool['formula']}: release {rel['tag_name']} lacks {asset} or checksums.txt", file=sys.stderr)
+    sums_name = next((n for n in ("SHA256SUMS", "checksums.txt") if n in assets), None)
+    if asset not in assets or not sums_name:
+        print(f"{tool['formula']}: release {rel['tag_name']} lacks {asset} or SHA256SUMS", file=sys.stderr)
         return False
-    sums = dict(reversed(line.split()) for line in get(assets["checksums.txt"], "*/*").decode().splitlines() if line.strip())
+    sums = dict(reversed(line.split()) for line in get(assets[sums_name], "*/*").decode().splitlines() if line.strip())
     sha = sums.get(asset)
     if not sha or not re.fullmatch(r"[0-9a-f]{64}", sha):
         print(f"{tool['formula']}: no valid SHA256 for {asset}", file=sys.stderr)

@@ -2,6 +2,6 @@
   {
     "formula": "polysub",
     "repo": "hongyukeji/polysub",
-    "asset": "polysub-{version}-macos-arm64.zip"
+    "asset": "PolySub-{version}-macos-arm64.zip"
   }
 ]

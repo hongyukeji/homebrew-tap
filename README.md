@@ -18,7 +18,7 @@ Upgrade with `brew upgrade <formula>`.
 
 Each tool lives in its own repository and publishes GitHub Releases. Every 30 minutes
 (`.github/workflows/sync.yml`, or run it by hand) this tap checks the latest release of
-every tool in `tools.json`, takes the SHA256 from the release's `checksums.txt`, updates the
+every tool in `tools.json`, takes the SHA256 from the release's `SHA256SUMS`, updates the
 formula, installs and tests it on macOS, and commits. No tokens are needed anywhere.
 
 Apps are installed as **formulae, not casks**: Homebrew downloads them with curl, so they do
@@ -29,8 +29,8 @@ by its release workflow.
 
 1. In the tool's repository: build a macOS app with `packaging/macos/build.sh`, and copy
    `.github/workflows/release.yml` from [polysub](https://github.com/hongyukeji/polysub)
-   (change `APP_NAME` and `ASSET_PREFIX`). Pushing a `vX.Y.Z` tag publishes
-   `<prefix>-<version>-macos-arm64.zip` and `checksums.txt`.
+   (change `APP_NAME`). Pushing a `vX.Y.Z` tag creates a draft release with
+   `<App>-<version>-macos-arm64.zip` and `SHA256SUMS`; the tap picks it up once it is published.
 2. Here: add an entry to `tools.json` and a `Formula/<name>.rb` (copy `polysub.rb`).
 3. Check the name is not already taken by homebrew-core
    (`curl -sI https://formulae.brew.sh/api/formula/<name>.json` must return 404),
