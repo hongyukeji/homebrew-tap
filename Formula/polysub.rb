@@ -1,9 +1,9 @@
 class Polysub < Formula
   desc "Turn any video into subtitles in any language with local or cloud models"
   homepage "https://github.com/hongyukeji/polysub"
-  url "https://github.com/hongyukeji/polysub/releases/download/v0.3.2/PolySub-0.3.2-macos-arm64.zip"
-  version "0.3.2"
-  sha256 "b01a62b6e5542ce7e8dae21fa5f616b9b6eab2293cd9ebcc36b141ce3469a403"
+  url "https://github.com/hongyukeji/polysub/releases/download/v0.4.0/PolySub-0.4.0-macos-arm64.zip"
+  version "0.4.0"
+  sha256 "c5c77f968e3af4d7b93ec35a62dac0fd100a434b24abd2a614c169d31078dea0"
   license "MIT"
 
   livecheck do
